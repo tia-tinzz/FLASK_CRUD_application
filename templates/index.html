@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% include 'header.html' %}
+
+
+{% block title %} Home {% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+    <br>
+    <br>
+    <div class="row">
+        <div class="col md-12">
+            <div class="p-3 mb-2 bg-secondary text-black">
+                <h2>DB<b>Travel Details</b>&nbsp;&nbsp;<button type="button" class="btn btn-success float-right"
+                        data-toggle="modal" data-target="#mymodal">Add New people</button></h2>
+                <!--<h2>Manage <b>Employees</b> <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#mymodal">Add New Employees</button>-->
+                {% with messages = get_flashed_messages() %}
+
+                {% if messages %}
+
+
+                {% for message in messages %}
+                <div class="alert alert-success alert-dismissable" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="close">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    {{message}}
+                </div>
+
+                {% endfor %}
+
+
+                {% endif %}
+
+
+
+                {% endwith %}
+
+                <table class="table table-hover table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>EMAIL</th>
+                        <th>PHONE</th>
+                        <th>TRAVEL_FROM</th>
+                        <th>TRAVEL_TO</th>
+                        <th>ACTION : EDIT/DELETE</th>
+                    </tr>
+                    {% for employee in employees %}
+
+                    <tr>
+                        <td>{{employee.id}}</td>
+                        <td>{{employee.name}}</td>
+                        <td>{{employee.email}}</td>
+                        <td>{{employee.phone}}</td>
+                        <td>{{employee.travel_from}}</td>
+                        <td>{{employee.travel_to}}</td>
+                        <td>
+                            <a href="/update/{{employee.id}}" class="btn btn-primary" data-toggle="modal"
+                                data-target="#modaldit{{employee.id}}">Edit</a>
+                            <a href="/delete/{{employee.id}}" class="btn btn-danger btn-xs"
+                                onclick="return confirm('Are You Sure To Delete ?')">Delete</a>
+                        </td>
+                    </tr>
+                    <div id="modaldit{{employee.id}}" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">
+                                        Update information
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('update')}}" method="post">
+                                        <div class="form-group">
+                                            <label>Name:</label>
+                                            <input type="hidden" name="id" value="{{employee.id}}">
+                                            <input type="text" name="name" id="" class="form-control" required=""
+                                                value="{{employee.name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email:</label>
+                                            <input type="email" name="email" id="" class="form-control" required=""
+                                                value="{{employee.email}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Phone:</label>
+                                            <input type="number" name="phone" id="" class="form-control" required=""
+                                                value="{{employee.phone}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Travel_From:</label>
+                                            <input type="text" name="travel_from" id="travel_from" class="form-control"
+                                                required="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Travel_To:</label>
+                                            <input type="text" name="travel_to" id="travel_to" class="form-control"
+                                                required="">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button:button class="btn btn-secondary" data-dismiss="modal">Close
+                                            </button:button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </table>
+            </div>
+            <div id="mymodal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">
+                                Add People
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{url_for('insert')}}" method="post">
+                                <div class="form-group">
+                                    <label>Name:</label>
+                                    <input type="text" name="name" id="name" class="form-control" required="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email:</label>
+                                    <input type="email" name="email" id="email" class="form-control" required="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone:</label>
+                                    <input type="number" name="phone" id="phone" class="form-control" required="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Travel_From:</label>
+                                    <input type="text" name="travel_from" id="travel_from" class="form-control"
+                                        required="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Travel_To:</label>
+                                    <input type="text" name="travel_to" id="travel_to" class="form-control" required="">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button:button class="btn btn-secondary" data-dismiss="modal">Close</button:button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
